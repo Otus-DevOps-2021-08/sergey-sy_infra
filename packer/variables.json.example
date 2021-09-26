@@ -1,0 +1,6 @@
+{
+	"yc_folder_id": "YOR FOLDER ID FROM YC",
+	"yc_service_account_key_file": "./yandex-cloud-key.json.example",
+	"yc_source_image_family": "ubuntu-1604-lts"
+
+}
