@@ -1,0 +1,11 @@
+cloud_id         = "b1gmeaiha9tn4rgsi6ir"
+folder_id        = "b1g9jlmmsg7nn4c4bhjd"
+zone             = "ru-central1-a"
+public_key_path  = "~/.ssh/id_rsa.pub"
+private_key_path = "~/.ssh/id_rsa"
+subnet_id        = "e9bje33hq7gr7366705p"
+count_resources  = 1
+app_disk_image   = "fd8jn6bdqnuo2ro7d2rm"
+db_disk_image    = "fd8hvut9atob6tra4h71"
+db_name          = "db-stage"
+

@@ -47,6 +47,8 @@ yc compute instance create \
 
 В данном ДЗ создан шаблон для packer ubuntu116.json  при помощи которого можно собрать reddit-base  образ в YC.
 В указанном шаблоне используется параметризация, которая хранится в файле variables.json. Файл с параметрами находится локально у пользователя и не отправляется в git.
+Валидация шаблона выполняется по команде ```packer validate -var-file=./variables.json ubuntu16.json```
+Сборка по команде ```packer build -var-file=./variables.json ubuntu16.json```
 В VM собранной на основе этого шаблона нужно самостоятельно установить приложение reddit ```packer/scripts/deploy.sh```
 
 Чтобы избежать ручной работы по самостоятельной установке reddit руками, создан ещё один шаблон packer immutable.json, который схожим образом собирает образ reddit-full, но при этом дополнительными провиженерами в образ при сборке деплоится приложение reddit и настраивается автоматический старт приложения reddit как сервиса (packer/files/puma.service)  при старте VM.
@@ -68,4 +70,25 @@ terraform init
 terraform plan
 terraform apply -auto-approve
 ```
+#### ДЗ 7
+В директории terraform есть инфраструктура для двух окружений. Инфраструктура идентична.
+Перез созданием инфраструктуры в папках prod или stage необходимо предварительно создать storage bucket в cloud с именем trfm-stt-bckt (если он ещё не создан).
+Для создания storage bucket перейдите в директорию terraform  и выполните:
+```
+terraform init
+terraform plan
+terraform apply
+```
+В данном баккете в разных директориях terraform будет хранить состояние инфраструктуры prod и stage (file terraform.tfstate)
+Директория для хранения в баккете задаётся в файлах  ```terraform/prod||stage/backend.tf```
 
+Для инициализации основной инфрастуктуры через терраформ из папки prod или stage выполнить:
+```
+terraform init \
+    -backend-config="access_key=<YANDEX CLOUD STATIC KEY ID>" \
+    -backend-config="secret_key=<YANDEX CLOUD STATIC KEY SECRET>" \
+    -backend-config="bucket=<YANDEX CLOUD BUCKET NAME>"
+terraform plan
+terraform apply
+```
+В каждой инфраструктуре одна база данных соединяется с несколькими инстансами приложения. Кол-во инстансов задаётся в переменной count_resources файлов terraform/prod||stage/ terraform.tfvars
